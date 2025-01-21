@@ -135,6 +135,8 @@ celerybeat.pid
 .env
 .venv
 .venvpiloto
+./venvpiloto/
+./venvpiloto
 env/
 venv/
 ENV/
