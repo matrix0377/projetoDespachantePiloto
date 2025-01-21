@@ -1,0 +1,157 @@
+[18:27, 28/10/2024] Meta AI: Aqui está um exemplo simples de um sistema de cadastro de taxistas usando Python e Flask:
+
+Requisitos
+
+- Python 3.8+
+- Flask 2.0+
+- Flask-SQLAlchemy 2.5+ (para gerenciamento de banco de dados)
+
+Código
+
+(link unavailable)
+
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///taxistas.db'
+db = SQLAlchemy(app)
+
+class Taxista(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    cpf = db.Column(db.String(11), nullable=False, unique=True)
+    telefone = db.Column(db.String(20), nullable=False)
+    placa_veiculo = db.Column(db.String(10), nullable=False)
+    modelo_veiculo = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f'Taxista({self.nome}, {self.cpf})'
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+    if request.method == 'POST':
+        taxista = Taxista(
+            nome=request.form['nome'],
+            cpf=request.form['cpf'],
+            telefone=request.form['telefone'],
+            placa_veiculo=request.form['placa_veiculo'],
+            modelo_veiculo=request.form['modelo_veiculo']
+        )
+        db.session.add(taxista)
+        db.session.commit()
+        return redirect(url_for('lista_taxistas'))
+    return render_template('cadastro.html')
+
+@app.route('/lista_taxistas')
+def lista_taxistas():
+    taxistas = Taxista.query.all()
+    return render_template('lista_taxistas.html', taxistas=taxistas)
+
+@app.route('/deletar_taxista/<int:id>')
+def deletar_taxista(id):
+    taxista = Taxista.query.get(id)
+    if taxista:
+        db.session.delete(taxista)
+        db.session.commit()
+    return redirect(url_for('lista_taxistas'))
+
+if __name__ == '__main__':
+    db.create_all()
+    app.run(debug=True)
+
+
+templates/index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro de Taxistas</title>
+</head>
+<body>
+    <h1>Cadastro de Taxistas</h1>
+    <ul>
+        <li><a href="{{ url_for('cadastro') }}">Cadastrar Taxista</a></li>
+        <li><a href="{{ url_for('lista_taxistas') }}">Lista de Taxistas</a></li>
+    </ul>
+</body>
+</html>
+
+
+templates/cadastro.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro de Taxista</title>
+</head>
+<body>
+    <h1>Cadastro de Taxista</h1>
+    <form method="POST">
+        <label>Nome:</label>
+        <input type="text" name="nome" required><br><br>
+        <label>CPF:</label>
+        <input type="text" name="cpf" required><br><br>
+        <label>Telefone:</label>
+        <input type="text" name="telefone" required><br><br>
+        <label>Placa do Veículo:</label>
+        <input type="text" name="placa_veiculo" required><br><br>
+        <label>Modelo do Veículo:</label>
+        <input type="text" name="modelo_veiculo" required><br><br>
+        <input type="submit" value="Cadastrar">
+    </form>
+</body>
+</html>
+
+
+templates/lista_taxistas.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Taxistas</title>
+</head>
+<body>
+    <h1>Lista de Taxistas</h1>
+    <ul>
+    {% for taxista in taxistas %}
+        <li>{{ taxista.nome }} ({{ taxista.cpf }}) - {{ taxista.telefone }} - {{ taxista.placa_veiculo }} ({{ taxista.modelo_veiculo }})</li>
+        <a href="{{ url_for('deletar_taxista', id=(link unavailable)) }}">Deletar</a>
+    {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+Passos para executar o código
+
+1. Instale as dependências necessárias: pip install Flask Flask-SQLAlchemy
+2. Crie um diretório para o projeto e adicione os arquivos (link unavailable), templates/index.html, templates/cadastro.html e templates/lista_taxistas.html
+3. Execute o comando python (link unavailable)
+[18:31, 28/10/2024] Davi Augusto: Melhore o código acrescentando o campo "condutax", "vencimento condutax", "licenciamento".
+[18:31, 28/10/2024] Meta AI: Aqui está o código atualizado com os campos adicionais:
+
+
+
+
+
+
+
+
+[18:45, 28/10/2024] Davi Augusto: Me mostre como ficaria esse layout
+[18:45, 28/10/2024] Meta AI: Segue uma prévia do layout:
+
+
+------------------------------------------------------------
+
+
+Este layout apresenta uma página inicial com links para cadastro e lista de taxistas. A página de cadastro possui um formulário com campos para inserir dados do taxista. A página de lista exibe os dados dos taxistas cadastrados, incluindo condutox e licenciamento.
+
+Para visualizar o layout, salve os arquivos HTML e execute o aplicativo Flask. Abra um navegador e acesse http://localhost:5000.
+
+------------------------------------------------------------
+

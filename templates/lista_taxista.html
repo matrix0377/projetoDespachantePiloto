@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Taxistas</title>
+</head>
+<body>
+    <h1>Lista de Taxistas</h1>
+    <ul>
+        {% for taxista in taxistas %}
+            <li>
+                {{ taxista.nome }} ({{ taxista.cpf }})
+                - Telefone: {{ taxista.telefone }}
+                - Veículo: {{ taxista.placa_veiculo }} ({{ taxista.modelo_veiculo }})
+                <br>Condutox: {{ taxista.condutax }} (Venc.: {{ taxista.vencimento_condutax.strftime('%d/%m/%Y') }})
+                <br>Licenciamento: {{ taxista.licenciamento }} (Venc.: {{ taxista.vencimento_licenciamento.strftime('%d/%m/%Y') }})
+                <a href="{{ url_for('deletar_taxista', id=(link unavailable)) }}">Deletar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
