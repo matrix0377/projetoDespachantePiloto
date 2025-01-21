@@ -38,6 +38,7 @@ pip-delete-this-directory.txt
 
 # Git
 .git
+.git/
 
 # Unit test / coverage reports
 htmlcov/
