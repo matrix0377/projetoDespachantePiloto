@@ -1,21 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Taxistas</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 1000px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .table-container {
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Lista de Taxistas</h1>
-    <ul>
-        {% for taxista in taxistas %}
-            <li>
-                {{ taxista.nome }} ({{ taxista.cpf }})
-                - Telefone: {{ taxista.telefone }}
-                - Veículo: {{ taxista.placa_veiculo }} ({{ taxista.modelo_veiculo }})
-                <br>Condutox: {{ taxista.condutax }} (Venc.: {{ taxista.vencimento_condutax.strftime('%d/%m/%Y') }})
-                <br>Licenciamento: {{ taxista.licenciamento }} (Venc.: {{ taxista.vencimento_licenciamento.strftime('%d/%m/%Y') }})
-                <a href="{{ url_for('deletar_taxista', id=(link unavailable)) }}">Deletar</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <div class="header">
+            <h1>Lista de Taxistas</h1>
+        </div>
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Placa</th>
+                        <th>Condutax</th>
+                        <th>Veículo</th>
+                        <th>Vencimento Condutax</th>
+                        <th>Licenciamento</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for taxista in taxistas %}
+                        <tr>
+                            <td>{{ taxista.nome }}</td>
+                            <td>{{ taxista.telefone }}</td>
+                            <td>{{ taxista.placa_veiculo }}</td>
+                            <td>{{ taxista.condutax }}</td>
+                            <td>{{ taxista.veiculo }}</td>
+                            <td>{{ taxista.vencimento_condutax.strftime('%d/%m/%Y') }}</td>
+                            <td>{{ taxista.licenciamento }}</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Ações">
+                                    <a href="{{ url_for('editar_taxista', id=taxista.id) }}" class="btn btn-info btn-sm">Editar</a>
+                                    <a href="{{ url_for('deletar_taxista', id=taxista.id) }}" class="btn btn-danger btn-sm">Deletar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn btn-custom mt-4">Voltar ao Menu</a>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Ações</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 15px;
+        }
+        .container {
+            max-width: 1000px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .table-container {
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .btn-cadastro {
+            background-color: green;
+            color: white;
+        }
+        .btn-edicao {
+            background-color: orange;
+            color: black;
+        }
+        .btn-delecao {
+            background-color: red;
+            color: white;
+        }
+        .btn-custom:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Histórico de Ações</h1>
+        </div>
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tipo de Ação</th>
+                        <th>Nome</th>
+                        <th>Condutax</th>
+                        <th>Placa</th>                        
+                        <th>Data e Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for acao in historico_acoes %}
+                        <tr>
+                            <td>
+                                <button class="btn btn-custom {% if acao.tipo_acao == 'Cadastro' %}btn-cadastro{% elif acao.tipo_acao == 'Editado' %}btn-edicao{% elif acao.tipo_acao == 'Deleção' %}btn-delecao{% endif %}">
+                                    {{ acao.tipo_acao }}
+                                </button>
+                            </td>
+                            <td>{{ acao.nome }}</td>
+                            <td>{{ acao.condutax }}</td>
+                            <td>{{ acao.placa_veiculo }}</td>                            
+                            <td>{{ acao.data_hora.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Voltar ao Menu</a>
+        <a href="{{ url_for('gerar_relatorio_pdf') }}" class="btn btn-secondary mt-4">Gerar PDF</a>
+        <button type="button" class="btn btn-danger mt-4" data-toggle="modal" data-target="#confirmModal">Zerar Histórico</button>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirme a Ação</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ url_for('confirmar_zerar_historico') }}">
+                    <div class="modal-body">
+                        <p>Insira a senha para confirmar a ação de zerar o histórico e gerar o relatório em PDF.</p>
+                        <div class="form-group">
+                            <label for="senha">Senha:</label>
+                            <input type="password" name="senha" class="form-control" id="senha" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Confirmar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Taxista</title>
+    <title>Editar Taxista</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -28,44 +28,44 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Cadastro de Taxista</h1>
+            <h1>Editar Taxista</h1>
         </div>
         <form method="POST">
             <div class="form-group">
                 <label>Nome:</label>
-                <input type="text" name="nome" class="form-control" required>
+                <input type="text" name="nome" class="form-control" value="{{ taxista.nome }}" required>
             </div>
             <div class="form-group">
                 <label>Telefone:</label>
-                <input type="text" name="telefone" class="form-control" required>
+                <input type="text" name="telefone" class="form-control" value="{{ taxista.telefone }}" required>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Condutax:</label>
-                    <input type="text" name="condutax" class="form-control" required>
+                    <input type="text" name="condutax" class="form-control" value="{{ taxista.condutax }}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label>Vencimento Condutax:</label>
-                    <input type="date" name="vencimento_condutax" class="form-control" required>
+                    <input type="date" name="vencimento_condutax" class="form-control" value="{{ taxista.vencimento_condutax.strftime('%Y-%m-%d') }}" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Veículo:</label>
-                    <input type="text" name="veiculo" class="form-control" required>
+                    <input type="text" name="veiculo" class="form-control" value="{{ taxista.veiculo }}" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label>Placa do Veículo:</label>
-                    <input type="text" name="placa_veiculo" class="form-control" required>
+                    <input type="text" name="placa_veiculo" class="form-control" value="{{ taxista.placa_veiculo }}" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label>Licenciamento:</label>
-                    <input type="month" name="licenciamento" id="myMonth" class="form-control" value="2024-07" required>
+                    <input type="month" name="licenciamento" id="myMonth" class="form-control" value="{{ taxista.licenciamento }}" required>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
+            <button type="submit" class="btn btn-primary">Salvar</button>
         </form>
         <a href="{{ url_for('index') }}" class="btn btn-custom mt-4">Voltar ao Menu</a>
     </div>
