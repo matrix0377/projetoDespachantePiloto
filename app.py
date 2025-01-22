@@ -8,6 +8,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.colors import green, yellow, red, black, orange
 import os
 import logging
+from io import BytesIO
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///taxistas.db'
@@ -254,6 +255,90 @@ def consulta_resultados():
         return "Datas de início e fim não fornecidas."
 
 
+@app.route('/gerar_pdf', methods=['POST'])
+def gerar_pdf():
+    data_inicial = request.form['data_inicial']
+    data_final = request.form['data_final']
+    
+    if data_inicial and data_final:
+        try:
+            # Verificar se as datas estão no formato correto 'dd/mm/yyyy'
+            datetime.strptime(data_inicial, '%d/%m/%Y')
+            datetime.strptime(data_final, '%d/%m/%Y')
+        except ValueError as e:
+            logging.error(f"Erro ao converter data: {e}")
+            return "Formato de data inválido. Use dd/mm/yyyy."
+        
+        # Converter as datas para datetime
+        try:
+            data_inicial_dt = datetime.strptime(data_inicial, '%d/%m/%Y')
+            data_final_dt = datetime.strptime(data_final, '%d/%m/%Y')
+        except ValueError as e:
+            logging.error(f"Erro ao converter data: {e}")
+            return "Data inválida. Por favor, insira uma data válida no formato dd/mm/yyyy."
+        
+        # Consultar e ordenar os resultados
+        taxistas = Taxista.query.filter(Taxista.vencimento_condutax >= data_inicial_dt,
+                                        Taxista.vencimento_condutax <= data_final_dt) \
+                                .order_by(Taxista.vencimento_condutax.asc()).all()
+        
+        if not taxistas:
+            return "Nenhum resultado encontrado para as datas fornecidas."
+        
+        # Gerar PDF em modo paisagem
+        buffer = BytesIO()
+        pdf = canvas.Canvas(buffer, pagesize=landscape(letter))
+        pdf.setTitle("Relatório de Taxistas")
+        
+        # Configurações de layout
+        pdf.setFont("Helvetica-Bold", 14)
+        x = 20
+        y = 580
+        line_height = 20
+        col_widths = [200, 100, 60, 80, 130, 100, 120]  # Ajustar larguras das colunas
+        
+        # Adicionar o título e a linha dupla
+        pdf.drawString(x, y, f"Relatório de Taxistas de {data_inicial} até {data_final}")
+        y -= line_height
+        y -= line_height  # Mover o título uma linha abaixo
+        pdf.setLineWidth(2)
+        pdf.line(x, y, 770, y)  # Linha dupla
+        pdf.setLineWidth(0.5)
+        pdf.line(x, y - 2, 770, y - 2)  # Linha dupla
+        y -= line_height
+        
+        # Adicionar cabeçalho da tabela
+        pdf.setFont("Helvetica-Bold", 12)
+        col_x = x
+        headers = ["Nome", "Telefone", "Placa", "Condutax", "Vencto Condutax", "Veículo", "Licenciamento"]
+        for header, width in zip(headers, col_widths):
+            pdf.drawString(col_x, y, header)
+            col_x += width
+        y -= line_height
+        
+        pdf.setFont("Helvetica", 10)
+        # Adicionar conteúdo ao PDF
+        for taxista in taxistas:
+            col_x = x
+            campos = [taxista.nome, taxista.telefone, taxista.placa_veiculo, taxista.condutax, taxista.vencimento_condutax.strftime('%d/%m/%Y'), taxista.veiculo, taxista.licenciamento]
+            for campo, width in zip(campos, col_widths):
+                pdf.drawString(col_x, y, campo)
+                col_x += width
+            y -= line_height
+            if y < 50:
+                pdf.showPage()
+                pdf.setFont("Helvetica", 10)
+                y = 580
+        
+        pdf.showPage()
+        pdf.save()
+        
+        buffer.seek(0)
+        return send_file(buffer, as_attachment=True, download_name="relatorio_taxistas.pdf", mimetype='application/pdf')
+    else:
+        return "Datas de início e fim não fornecidas."
+    
+    
 
 if __name__ == '__main__':
     with app.app_context():
