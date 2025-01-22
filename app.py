@@ -11,7 +11,9 @@ import logging
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///taxistas.db'
-app.secret_key = 'supersecretkey'  # Chave secreta para flash messages
+app.secret_key = os.environ.get('SECRET_KEY', 'defaultsecretkey')  # Variável de ambiente para chave secreta
+PASSWORD = os.environ.get('ADMIN_PASSWORD', 'defaultpassword')  # Variável de ambiente para senha de administrador
+
 db = SQLAlchemy(app)
 
 # Senha definida para a ação de zerar histórico
@@ -89,8 +91,14 @@ def cadastro():
             licenciamento=request.form['licenciamento'],
             dt_cadastro=Data_hora._data_hora()
         )
-        db.session.add(taxista)
-        db.session.commit()
+        try:
+            db.session.add(taxista)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            logging.error(f'Erro ao adicionar taxista: {e}')
+            flash('Erro ao adicionar taxista. Por favor, tente novamente.')
+
         registrar_historico('Cadastro', taxista)
         return redirect(url_for('lista_taxistas'))
     return render_template('cadastro.html')
@@ -98,7 +106,10 @@ def cadastro():
 @app.route('/lista_taxistas')
 def lista_taxistas():
     taxistas = Taxista.query.all()
+    if not taxistas:
+        flash('Nenhum taxista encontrado no sistema.', 'warning')
     return render_template('lista_taxistas.html', taxistas=taxistas)
+    
 
 @app.route('/editar_taxista/<int:id>', methods=['GET', 'POST'])
 def editar_taxista(id):
