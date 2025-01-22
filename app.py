@@ -245,8 +245,10 @@ def consulta_resultados():
             logging.error(f"Erro ao converter data: {e}")
             return "Data inválida. Por favor, insira uma data válida no formato dd/mm/yyyy."
         
+        # Consultar e ordenar os resultados
         taxistas = Taxista.query.filter(Taxista.vencimento_condutax >= data_inicial_dt,
-                                        Taxista.vencimento_condutax <= data_final_dt).all()
+                                        Taxista.vencimento_condutax <= data_final_dt) \
+                                .order_by(Taxista.vencimento_condutax.asc()).all()
         return render_template('consulta.html', taxistas=taxistas, data_inicial=data_inicial, data_final=data_final)
     else:
         return "Datas de início e fim não fornecidas."
