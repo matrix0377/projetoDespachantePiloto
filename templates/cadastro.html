@@ -1,75 +1,58 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Taxista</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 20px;
-        }
-        .container {
-            max-width: 800px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Cadastro de Taxista</h1>
-        </div>
-        <form method="POST">
-            <div class="form-group">
-                <label>Nome:</label>
-                <input type="text" name="nome" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label>Telefone:</label>
-                <input type="text" name="telefone" class="form-control" required>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Condutax:</label>
-                    <input type="text" name="condutax" class="form-control" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>Vencimento Condutax:</label>
-                    <input type="date" name="vencimento_condutax" class="form-control" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Veículo:</label>
-                    <input type="text" name="veiculo" class="form-control" required>
-                </div>
-                <div class="form-group col-md-6">
-                    <label>Placa do Veículo:</label>
-                    <input type="text" name="placa_veiculo" class="form-control" required>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label>Licenciamento:</label>
-                    <input type="month" name="licenciamento" id="myMonth" class="form-control" value="2024-07" required>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Cadastrar</button>
-        </form>
-        <a href="{{ url_for('index') }}" class="btn btn-custom mt-4">Voltar ao Menu</a>
+{% extends "base.html" %}
+
+{% block title %}Cadastro de Taxista{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Cadastro de Taxista</h1>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert alert-warning" role="alert">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    <form method="POST">
+        <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" name="nome" id="nome" class="form-control" required aria-label="Nome">
+        </div>
+        <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="text" name="telefone" id="telefone" class="form-control" required aria-label="Telefone">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="condutax">Condutax:</label>
+                <input type="text" name="condutax" id="condutax" class="form-control" required aria-label="Condutax">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="vencimento_condutax">Vencimento Condutax:</label>
+                <input type="date" name="vencimento_condutax" id="vencimento_condutax" class="form-control" required aria-label="Vencimento Condutax">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="veiculo">Veículo:</label>
+                <input type="text" name="veiculo" id="veiculo" class="form-control" required aria-label="Veículo">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="placa_veiculo">Placa do Veículo:</label>
+                <input type="text" name="placa_veiculo" id="placa_veiculo" class="form-control" required aria-label="Placa do Veículo">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="licenciamento">Licenciamento:</label>
+                <input type="month" name="licenciamento" id="licenciamento" class="form-control" required aria-label="Licenciamento">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+    <a href="{{ url_for('index') }}" class="btn btn-custom mt-4">Voltar ao Menu</a>
+{% endblock %}

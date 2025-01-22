@@ -1,48 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-    <!-- Incluindo o CSS do Bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 20px;
-        }
-        .container {
-            max-width: 800px;
-        }
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Bem-vindo(a) ao Sistema de </h1>
-            <h1><b>Cadastro de Taxistas</b></h1>
-        </div>
-        <br>
-        <div class="d-flex justify-content-between mb-4">
-            <a href="{{ url_for('cadastro') }}" class="btn btn-custom">Cadastrar Novo Taxista</a>
-            <a href="{{ url_for('lista_taxistas') }}" class="btn btn-custom">Lista de Taxistas</a>
-            <a href="{{ url_for('historico') }}" class="btn btn-custom">Histórico de Ações</a>
-        </div>
+{% extends "base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Bem-vindo(a) ao Sistema de </h1>
+        <h1><b>Cadastro de Taxistas</b></h1>
     </div>
-    <!-- Incluindo o JavaScript do Bootstrap -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
-
-
+    <br>
+    <div class="d-flex justify-content-between mb-4">
+        <a href="{{ url_for('cadastro') }}" class="btn btn-custom" aria-label="Cadastrar Novo Taxista">Cadastrar Novo Taxista</a>
+        <a href="{{ url_for('lista_taxistas') }}" class="btn btn-custom" aria-label="Lista de Taxistas">Lista de Taxistas</a>
+        <a href="{{ url_for('historico') }}" class="btn btn-custom" aria-label="Histórico de Ações">Histórico de Ações</a>
+    </div>
+{% endblock %}

@@ -1,83 +1,53 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Ações</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            padding-top: 15px;
-        }
-        .container {
-            max-width: 1000px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .table-container {
-            margin-bottom: 20px;
-        }
-        .btn-custom {
-            border-radius: 20px;
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-        .btn-cadastro {
-            background-color: green;
-            color: white;
-        }
-        .btn-edicao {
-            background-color: orange;
-            color: black;
-        }
-        .btn-delecao {
-            background-color: red;
-            color: white;
-        }
-        .btn-custom:hover {
-            opacity: 0.8;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Histórico de Ações</h1>
-        </div>
-        <div class="table-container">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Tipo de Ação</th>
-                        <th>Nome</th>
-                        <th>Condutax</th>
-                        <th>Placa</th>                        
-                        <th>Data e Hora</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for acao in historico_acoes %}
-                        <tr>
-                            <td>
-                                <button class="btn btn-custom {% if acao.tipo_acao == 'Cadastro' %}btn-cadastro{% elif acao.tipo_acao == 'Editado' %}btn-edicao{% elif acao.tipo_acao == 'Deleção' %}btn-delecao{% endif %}">
-                                    {{ acao.tipo_acao }}
-                                </button>
-                            </td>
-                            <td>{{ acao.nome }}</td>
-                            <td>{{ acao.condutax }}</td>
-                            <td>{{ acao.placa_veiculo }}</td>                            
-                            <td>{{ acao.data_hora.strftime('%d/%m/%Y %H:%M:%S') }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Voltar ao Menu</a>
-        <a href="{{ url_for('gerar_relatorio_pdf') }}" class="btn btn-secondary mt-4">Gerar PDF</a>
-        <button type="button" class="btn btn-danger mt-4" data-toggle="modal" data-target="#confirmModal">Zerar Histórico</button>
+{% extends "base.html" %}
+
+{% block title %}Histórico de Ações{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Histórico de Ações</h1>
     </div>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert alert-warning" role="alert">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    <div class="table-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tipo de Ação</th>
+                    <th>Nome</th>
+                    <th>Condutax</th>
+                    <th>Placa</th>                        
+                    <th>Data e Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for acao in historico_acoes %}
+                    <tr>
+                        <td>
+                            <button class="btn btn-custom {% if acao.tipo_acao == 'Cadastro' %}btn-cadastro{% elif acao.tipo_acao == 'Editado' %}btn-edicao{% elif acao.tipo_acao == 'Deleção' %}btn-delecao{% endif %}" aria-label="{{ acao.tipo_acao }}">
+                                {{ acao.tipo_acao }}
+                            </button>
+                        </td>
+                        <td>{{ acao.nome }}</td>
+                        <td>{{ acao.condutax }}</td>
+                        <td>{{ acao.placa_veiculo }}</td>                            
+                        <td>{{ acao.data_hora.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Voltar ao Menu</a>
+    <a href="{{ url_for('gerar_relatorio_pdf') }}" class="btn btn-secondary mt-4">Gerar PDF</a>
+    <button type="button" class="btn btn-danger mt-4" data-toggle="modal" data-target="#confirmModal">Zerar Histórico</button>
 
     <!-- Modal de Confirmação -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
@@ -94,7 +64,7 @@
                         <p>Insira a senha para confirmar a ação de zerar o histórico e gerar o relatório em PDF.</p>
                         <div class="form-group">
                             <label for="senha">Senha:</label>
-                            <input type="password" name="senha" class="form-control" id="senha" required>
+                            <input type="password" name="senha" class="form-control" id="senha" required aria-label="Senha">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -105,8 +75,4 @@
             </div>
         </div>
     </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}
