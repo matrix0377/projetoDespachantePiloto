@@ -4,13 +4,18 @@
 
 {% block content %}
     <div class="header">
-        <h1>Bem-vindo(a) ao Sistema de </h1>
-        <h1><b>Cadastro de Taxistas</b></h1>
+        <br>
+        <h3>Bem-vindo(a) ao Sistema </h3>
+        <center>
+            <br><br>
+            <h1><b>Cadastro de Taxistas</b></h1>
+        </center>
+        <br>
     </div>
     <br>
-    <div class="d-flex justify-content-between mb-4">
-        <a href="{{ url_for('cadastro') }}" class="btn btn-custom" aria-label="Cadastrar Novo Taxista">Cadastrar Novo Taxista</a>
-        <a href="{{ url_for('lista_taxistas') }}" class="btn btn-custom" aria-label="Lista de Taxistas">Lista de Taxistas</a>
-        <a href="{{ url_for('historico') }}" class="btn btn-custom" aria-label="Histórico de Ações">Histórico de Ações</a>
+    <div class="d-flex justify-content-between mb-5">
+        <a href="{{ url_for('cadastro') }}" class="btn btn-success" aria-label="Cadastrar Novo Taxista">Cadastrar Novo Taxista</a>
+        <a href="{{ url_for('lista_taxistas') }}" class="btn btn-info" aria-label="Lista de Taxistas">Lista de Taxistas</a>
+        <a href="{{ url_for('historico') }}" class="btn btn-warning" aria-label="Histórico de Ações">Histórico de Ações</a>
     </div>
 {% endblock %}

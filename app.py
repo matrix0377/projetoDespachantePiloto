@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import pytz
-from reportlab.lib.pagesizes import letter
+from reportlab.lib.pagesizes import letter, landscape
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import green, yellow, red, black, orange
 import os
@@ -142,14 +142,15 @@ def historico():
     historico_acoes = HistoricoAcao.query.all()
     return render_template('historico.html', historico_acoes=historico_acoes)
 
+
 @app.route('/gerar_relatorio_pdf')
 def gerar_relatorio_pdf():
     historico_acoes = HistoricoAcao.query.all()
     data_hora_atual = datetime.now().strftime('%d-%m-%Y__%Hh%Mmin') 
     relatorio_path = os.path.join('instance', f'relatorio_historico_{data_hora_atual}.pdf')
     
-    c = canvas.Canvas(relatorio_path, pagesize=letter)
-    width, height = letter
+    c = canvas.Canvas(relatorio_path, pagesize=landscape(letter))
+    width, height = landscape(letter)
     
     # Centralizar o título
     titulo = "Relatório de Histórico de Ações"
@@ -160,23 +161,24 @@ def gerar_relatorio_pdf():
     c.setFont("Helvetica-Bold", 12)
     c.drawString(30, height - 80, "Tipo de Ação")
     c.drawString(130, height - 80, "Nome")
-    c.drawString(230, height - 80, "Placa")
-    c.drawString(330, height - 80, "Condutax")
-    c.drawString(430, height - 80, "Data e Hora")
+    c.drawString(380, height - 80, "Placa")
+    c.drawString(480, height - 80, "Condutax")
+    c.drawString(580, height - 80, "Data e Hora")
 
     y = height - 100
     for acao in historico_acoes:
         cor = cor_tipo_acao(acao.tipo_acao)
         c.setFillColor(cor)
-        c.drawString(30, y, acao.tipo_acao)        
+        c.drawString(30, y, acao.tipo_acao)
         c.drawString(130, y, acao.nome)
-        c.drawString(230, y, acao.placa_veiculo)
-        c.drawString(330, y, acao.condutax)
-        c.drawString(430, y, acao.data_hora.strftime('%d/%m/%Y %H:%M:%S'))
+        c.drawString(380, y, acao.placa_veiculo)
+        c.drawString(480, y, acao.condutax)
+        c.drawString(580, y, acao.data_hora.strftime('%d/%m/%Y %H:%M:%S'))
         y -= 20
 
     c.save()
     return send_file(relatorio_path, as_attachment=True)
+
 
 @app.route('/confirmar_zerar_historico', methods=['POST'])
 def confirmar_zerar_historico():

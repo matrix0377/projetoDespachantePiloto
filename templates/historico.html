@@ -32,7 +32,9 @@
                 {% for acao in historico_acoes %}
                     <tr>
                         <td>
-                            <button class="btn btn-custom {% if acao.tipo_acao == 'Cadastro' %}btn-cadastro{% elif acao.tipo_acao == 'Editado' %}btn-edicao{% elif acao.tipo_acao == 'Deleção' %}btn-delecao{% endif %}" aria-label="{{ acao.tipo_acao }}">
+                            <button class="btn btn-sm btn-rounded 
+                                {% if acao.tipo_acao == 'Cadastro' %}btn-success{% elif acao.tipo_acao == 'Editado' %}btn-warning{% elif acao.tipo_acao == 'Deleção' %}btn-danger{% else %}btn-secondary{% endif %}" 
+                                aria-label="{{ acao.tipo_acao }}">
                                 {{ acao.tipo_acao }}
                             </button>
                         </td>
