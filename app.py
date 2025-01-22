@@ -194,6 +194,7 @@ def confirmar_zerar_historico():
         flash('Senha incorreta. Tente novamente.')
         logging.debug('Senha incorreta.')
         return redirect(url_for('historico'))
+    
 
 @app.route('/zerar_historico')
 def zerar_historico():
@@ -210,6 +211,47 @@ def zerar_historico():
         logging.error(f'Erro ao zerar histórico: {e}')
         flash('Ocorreu um erro ao tentar zerar o histórico. Por favor, tente novamente.')
     return redirect(url_for('historico'))
+
+
+@app.route('/consulta', methods=['GET', 'POST'])
+def consulta():
+    if request.method == 'POST':
+        data_inicial = request.form['data_inicial']
+        data_final = request.form['data_final']
+        logging.debug(f'Data Inicial: {data_inicial}, Data Final: {data_final}')
+        return redirect(url_for('consulta_resultados', data_inicial=data_inicial, data_final=data_final))
+    
+    return render_template('consulta.html')
+
+@app.route('/consulta_resultados', methods=['GET', 'POST'])
+def consulta_resultados():
+    data_inicial = request.args.get('data_inicial')
+    data_final = request.args.get('data_final')
+    
+    if data_inicial and data_final:
+        try:
+            # Verificar se as datas estão no formato correto 'dd/mm/yyyy'
+            datetime.strptime(data_inicial, '%d/%m/%Y')
+            datetime.strptime(data_final, '%d/%m/%Y')
+        except ValueError as e:
+            logging.error(f"Erro ao converter data: {e}")
+            return "Formato de data inválido. Use dd/mm/yyyy."
+        
+        # Converter as datas para datetime
+        try:
+            data_inicial_dt = datetime.strptime(data_inicial, '%d/%m/%Y')
+            data_final_dt = datetime.strptime(data_final, '%d/%m/%Y')
+        except ValueError as e:
+            logging.error(f"Erro ao converter data: {e}")
+            return "Data inválida. Por favor, insira uma data válida no formato dd/mm/yyyy."
+        
+        taxistas = Taxista.query.filter(Taxista.vencimento_condutax >= data_inicial_dt,
+                                        Taxista.vencimento_condutax <= data_final_dt).all()
+        return render_template('consulta.html', taxistas=taxistas, data_inicial=data_inicial, data_final=data_final)
+    else:
+        return "Datas de início e fim não fornecidas."
+
+
 
 if __name__ == '__main__':
     with app.app_context():

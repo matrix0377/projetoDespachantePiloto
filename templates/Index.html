@@ -13,9 +13,10 @@
         <br>
     </div>
     <br>
-    <div class="d-flex justify-content-between mb-5">
-        <a href="{{ url_for('cadastro') }}" class="btn btn-success" aria-label="Cadastrar Novo Taxista">Cadastrar Novo Taxista</a>
+    <div class="d-flex justify-content-between mb-4">
+        <a href="{{ url_for('cadastro') }}" class="btn btn-primary" aria-label="Cadastrar Novo Taxista">Cadastrar Novo Taxista</a>
         <a href="{{ url_for('lista_taxistas') }}" class="btn btn-info" aria-label="Lista de Taxistas">Lista de Taxistas</a>
         <a href="{{ url_for('historico') }}" class="btn btn-warning" aria-label="Histórico de Ações">Histórico de Ações</a>
+        <a href="{{ url_for('consulta') }}" class="btn btn-dark" aria-label="Consulta de Vencimentos">Consulta de Vencimentos</a>
     </div>
 {% endblock %}

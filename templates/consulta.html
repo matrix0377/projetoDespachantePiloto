@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Consulta de Vencimentos de Condutax{% endblock %}
+
+{% block content %}
+    <div class="header">
+        <h1>Consulta de Vencimentos</h1>
+    </div>
+    
+    <form action="/consulta" method="post">
+        <label for="data_inicial">Data Inicial:</label>
+        <input type="text" id="data_inicial" name="data_inicial" placeholder="dd/mm/yyyy" required>
+        
+        <label for="data_final">Data Final:</label>
+        <input type="text" id="data_final" name="data_final" placeholder="dd/mm/yyyy" required>
+        
+        <button type="submit">Consultar</button>
+    </form>
+    
+
+    {% if taxistas is not none %}
+        <div class="table-container mt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Placa</th>
+                        <th>Condutax</th>
+                        <th>Vencimento Condutax</th>
+                        <th>Veículo</th>
+                        <th>Licenciamento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for taxista in taxistas %}
+                        <tr>
+                            <td>{{ taxista.nome }}</td>
+                            <td>{{ taxista.telefone }}</td>
+                            <td>{{ taxista.placa_veiculo }}</td>
+                            <td>{{ taxista.condutax }}</td>
+                            <td>{{ taxista.vencimento_condutax.strftime('%d/%m/%Y') }}</td>
+                            <td>{{ taxista.veiculo }}</td>
+                            <td>{{ taxista.licenciamento }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
+
