@@ -17,7 +17,7 @@ PASSWORD = os.environ.get('ADMIN_PASSWORD', 'defaultpassword')  # Variável de a
 db = SQLAlchemy(app)
 
 # Senha definida para a ação de zerar histórico
-PASSWORD = 'Nika@102550'
+#PASSWORD = 'Nika@102550'
 
 # Configuração de logging
 logging.basicConfig(level=logging.DEBUG)
@@ -81,8 +81,9 @@ def index():
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
+        nome_formatado = request.form['nome'].title()  # Formata o nome
         taxista = Taxista(
-            nome=request.form['nome'],
+            nome=nome_formatado,
             telefone=request.form['telefone'],
             condutax=request.form['condutax'],
             vencimento_condutax=datetime.strptime(request.form['vencimento_condutax'], '%Y-%m-%d'),
