@@ -2,6 +2,25 @@
 
 {% block title %}Consulta de Vencimentos{% endblock %}
 
+{% block styles %}
+    .header {
+        padding-top: 45px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #000000;
+    }
+
+    label {
+        color: #000000;
+    }
+
+    .btn {
+        text-align: center;
+        display: inline;
+    }
+    
+{% endblock %}
+
 {% block content %}
     <div class="header">
         <br>
@@ -16,10 +35,11 @@
         <label for="data_final">Data Final:</label>
         <input type="text" id="data_final" name="data_final" placeholder="dd/mm/yyyy" required>
         
-        <button type="submit">Consultar</button>
+        <button type="submit" style="margin-right: 15px;">Consultar</button>
         <!-- Botão para gerar PDF -->
-        <button type="submit" formaction="/gerar_pdf" formmethod="post" style="margin-left: 10px;">Gerar PDF</button>
-    </form>
+        <button type="submit" class="btn btn-success" formaction="/gerar_pdf" formmethod="post" style="margin-right: 15px;">Gerar PDF</button>
+        <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Voltar ao Menu</a>        
+	</form>
     
 
     {% if taxistas is not none %}

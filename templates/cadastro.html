@@ -2,9 +2,25 @@
 
 {% block title %}Cadastro de Taxista{% endblock %}
 
+
+{% block styles %}
+    body {
+        background: url('{{ url_for('static', filename='lamborghini_yellow-background.png') }}') no-repeat center center fixed;
+        background-size: cover;
+        color: #fff;
+    }
+
+    .header {
+        padding-top: 75px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #000000;
+    }
+{% endblock %}
+
+
 {% block content %}
     <div class="header" style="text-align:center">
-        <br> <br>
         <h1>Cadastro de Taxista</h1>
     </div>
     

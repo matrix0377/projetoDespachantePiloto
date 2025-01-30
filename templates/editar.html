@@ -2,6 +2,21 @@
 
 {% block title %}Editar Taxista{% endblock %}
 
+{% block styles %}
+    .header {
+        padding-top: 75px;
+        text-align: center;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #000000;
+    }
+
+    label {
+        color: #000000;
+    }
+
+{% endblock %}
+
 {% block content %}
     <div class="header">
         <h1>Editar Taxista</h1>
@@ -41,7 +56,7 @@
                 <input type="month" name="licenciamento" id="licenciamento" class="form-control" value="{{ taxista.licenciamento }}" required aria-label="Licenciamento">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="submit" class="btn btn-success">Salvar</button>
     </form>
-    <a href="{{ url_for('index') }}" class="btn btn-custom mt-4">Voltar ao Menu</a>
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Voltar ao Menu</a>
 {% endblock %}

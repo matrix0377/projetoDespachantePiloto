@@ -2,9 +2,18 @@
 
 {% block title %}Página Inicial{% endblock %}
 
+{% block styles %}
+    body {
+        margin: 0;      
+        color: #fff;
+        background: url('{{ url_for('static', filename='lamborghini_taxi.png') }}') no-repeat center center fixed;
+        background-size: cover;
+    }
+{% endblock %}
+
 {% block content %}
     <div class="header">
-        <br>
+        <br> <br> <br>
         <h3>Bem-vindo(a) ao Sistema </h3>
         <center>
             <br><br>
@@ -20,3 +29,6 @@
         <a href="{{ url_for('consulta') }}" class="btn btn-dark" aria-label="Consulta de Vencimentos">Consulta de Vencimentos</a>
     </div>
 {% endblock %}
+
+
+

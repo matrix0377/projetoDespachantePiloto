@@ -2,9 +2,18 @@
 
 {% block title %}Lista de Taxistas{% endblock %}
 
+{% block styles %}
+    .header {
+        padding-top: 65px;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #000000;
+    }
+
+{% endblock %}
+
 {% block content %}
-    <div class="header" style="text-align:center">
-        <br>
+    <div class="header" style="text-align:center">        
         <h1>Lista de Taxistas</h1>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
