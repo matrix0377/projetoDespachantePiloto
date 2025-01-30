@@ -11,18 +11,12 @@ Projeto Despachante feito com ajuda de IA (Copilot)
 - Método Histórico: guarda no BD as alterações feitas usando os métodos POST(inserir), PUT (atualizar) e DELETE (apagar).
 
 # Funcionalidades:
-Cadastra Taxistas
-Lista de Taxistas Cadastrados
-Histórico de Ações
-Gera Relatorio em PDF do Histórico 
-Zera o histórico de alterações e gera um pdf na pasta "instances" antes de apagar.
-
 <dl>
-    <dd> <p> &emsp; &emsp; Cadastra Taxistas   </p> </dd>
-    <dd> <p> &emsp; &emsp; Lista de Taxistas Cadastrados   </p> </dd>
-    <dd> <p> &emsp; &emsp; Histórico de Ações   </p> </dd>
-    <dd> <p> &emsp; &emsp; Gera Relatorio em PDF do Histórico   </p> </dd>
-    <dd> <p> &emsp; &emsp; Zera o histórico de alterações e gera um pdf na pasta "instances" antes de apagar.  </p> </dd>
+    <dd> <p> &emsp; &emsp; - Cadastra Taxistas   </p> </dd>
+    <dd> <p> &emsp; &emsp; - Lista de Taxistas Cadastrados   </p> </dd>
+    <dd> <p> &emsp; &emsp; - Histórico de Ações   </p> </dd>
+    <dd> <p> &emsp; &emsp; - Gera Relatorio em PDF do Histórico   </p> </dd>
+    <dd> <p> &emsp; &emsp; - Zera o histórico de alterações e gera um pdf na pasta "instances" antes de apagar.  </p> </dd>
 </dl>
 
 
